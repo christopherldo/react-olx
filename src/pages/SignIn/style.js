@@ -34,11 +34,6 @@ export const PageArea = styled.div`
           outline: 0;
           transition: all 0.4s ease-in-out 0s;
 
-          &:hover{
-            border: 1px solid #333;
-            color: #333;
-          };
-
           &:focus{
             border: 1px solid #333;
             color: #333;
