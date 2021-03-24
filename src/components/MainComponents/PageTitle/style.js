@@ -1,3 +1,5 @@
 import styled from 'styled-components';
 
-export const PageBody = styled.main``;
+export const PageTitle = styled.h1`
+  font-size: 27px;
+`;

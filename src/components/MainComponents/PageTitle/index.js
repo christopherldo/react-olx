@@ -1,11 +1,11 @@
 import React from 'react'
-import {PageBody} from './style'
+import {PageTitle} from './style'
 
 const Component = props => {
   return (
-    <PageBody>
+    <PageTitle>
       {props.children}
-    </PageBody>
+    </PageTitle>
   );
 };
 

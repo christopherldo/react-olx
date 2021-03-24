@@ -1,11 +1,11 @@
 import React from 'react'
-import {PageBody} from './style'
+import {PageContainer} from './style'
 
 const Component = props => {
   return (
-    <PageBody>
+    <PageContainer>
       {props.children}
-    </PageBody>
+    </PageContainer>
   );
 };
 
