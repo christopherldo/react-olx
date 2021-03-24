@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import useApi from '../../helpers/OLXApi';
 import { doLogin } from '../../helpers/AuthHandler';
 import { PageArea } from './style';
-import { PageContainer, PageTitle } from '../../components';
+import { PageContainer, PageTitle, ErrorMessage } from '../../components';
 
 const Page = () => {
   const api = useApi();
@@ -14,16 +14,21 @@ const Page = () => {
   const [error, setError] = useState('');
 
   const handleSubmit = async e => {
+    setError('');
     e.preventDefault();
-    setDisabled(true);
 
-    const json = await api.login(email, password);
+    if(email && password){
+      setDisabled(true);
+      const json = await api.login(email, password);
 
-    if (json.error) {
-      setError(json.error);
+      if (json.error) {
+        setError(json.error);
+      } else {
+        doLogin(json.token, rememberLogin);
+        window.location.href = '/';
+      };
     } else {
-      doLogin(json.token, rememberLogin);
-      window.location.href = '/';
+      setError('Preencha todos os campos.')
     };
   };
 
@@ -31,23 +36,40 @@ const Page = () => {
     <PageContainer>
       <PageTitle>Login</PageTitle>
       <PageArea>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <form onSubmit={handleSubmit}>
           <label className="area">
             <div className="area--title">E-mail:</div>
             <div className="area--input">
-              <input autoFocus type="email" disabled={disabled} />
+              <input
+                autoFocus
+                type="email"
+                disabled={disabled}
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+              />
             </div>
           </label>
           <label className="area">
             <div className="area--title">Senha:</div>
             <div className="area--input">
-              <input type="password" disabled={disabled} />
+              <input
+                type="password"
+                disabled={disabled}
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
             </div>
           </label>
           <label className="area">
             <div className="area--title">Lembrar senha?</div>
             <div className="area--input">
-              <input type="checkbox" disabled={disabled} />
+              <input
+                type="checkbox"
+                disabled={disabled}
+                checked={rememberLogin}
+                onChange={() => setRememberLogin(!rememberLogin)}
+              />
             </div>
           </label>
           <label className="area">
