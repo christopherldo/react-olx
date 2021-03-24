@@ -26,10 +26,13 @@ const Page = () => {
       } else {
         doLogin(json.token, rememberLogin);
         window.location.href = '/';
+        return;
       };
     } else {
       setError('Preencha todos os campos.')
     };
+
+    setDisabled(false);
   };
 
   return (
