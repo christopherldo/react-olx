@@ -8,13 +8,13 @@ const Page = () => {
   const api = useApi();
 
   const [name, setName] = useState('');
+  const [stateList, setStateList] = useState([]);
   const [stateLoc, setStateLoc] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [password_confirmation, setPassword_confirmation] = useState('');
   const [disabled, setDisabled] = useState(false);
   const [error, setError] = useState('');
-  const [stateList, setStateList] = useState([]);
 
   useEffect(() => {
     const getStates = async () => {
@@ -26,16 +26,22 @@ const Page = () => {
   }, []);
 
   const handleSubmit = async e => {
-    setError('');
     e.preventDefault();
+    setError('');
 
     if (name && stateLoc && email && password && password_confirmation) {
+      if(password !== password_confirmation) {
+        setError('As senhas não coincidem');
+        return;
+      };
+
       setDisabled(true);
-      const json = await api.login(email, password);
+      const json = await api.register(name, stateLoc, email, password);
 
       if (json.error) {
         setError(json.error);
       } else {
+        doLogin(json.token);
         window.location.href = '/';
         return;
       };

@@ -14,8 +14,8 @@ const Page = () => {
   const [error, setError] = useState('');
 
   const handleSubmit = async e => {
-    setError('');
     e.preventDefault();
+    setError('');
 
     if(email && password){
       setDisabled(true);
