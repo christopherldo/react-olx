@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useApi from '../../helpers/OLXApi';
-import { PageArea } from './style';
+import { PageArea, Fake } from './style';
 import { PageContainer } from '../../components';
 
 const Page = () => {
@@ -17,20 +17,25 @@ const Page = () => {
         <div className="leftSide">
           <div className="box">
             <div className="adImage">
-              ...
+              {loading && <Fake height={300} />}
             </div>
             <div className="adInfo">
               <div className="adName">
-                ...
+                {loading && <Fake height={40} />}
               </div>
               <div className="adDescription">
-                ...
+                {loading && <Fake height={100} />}
               </div>
             </div>
           </div>
         </div>
         <div className="rightSide">
-          ...
+          <div className="box box--padding">
+            {loading && <Fake height={30} />}
+          </div>
+          <div className="box box--padding">
+            {loading && <Fake height={100} />}
+          </div>
         </div>
       </PageArea>
     </PageContainer>
