@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import useApi from '../../helpers/OLXApi';
 import { doLogin } from '../../helpers/AuthHandler';
 import { PageArea } from './style';
@@ -17,7 +17,7 @@ const Page = () => {
     e.preventDefault();
     setError('');
 
-    if(email && password){
+    if (email && password) {
       setDisabled(true);
       const json = await api.login(email, password);
 

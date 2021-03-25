@@ -1,7 +1,7 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom';
 
-import { Home, About, NotFound, SignIn, SignUp } from './pages';
+import { Home, About, NotFound, SignIn, SignUp, AdPage } from './pages';
 
 const Routes = () => {
   return (
@@ -20,6 +20,10 @@ const Routes = () => {
 
       <Route exact path="/signup">
         <SignUp />
+      </Route>
+
+      <Route exact path="/ad/:id">
+        <AdPage />
       </Route>
 
       <Route>

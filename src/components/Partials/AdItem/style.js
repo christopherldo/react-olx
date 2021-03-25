@@ -14,7 +14,7 @@ export const AdItem = styled.div`
 
     &:hover {
       background-color: #eee;
-      border-color: #ddd;
+      border-color: #777;
     };
 
     .itemImage img {
