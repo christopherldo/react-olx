@@ -45,6 +45,35 @@ export const SearchArea = styled.div`
         height: 40px;
         padding: 0 20px;
         cursor: pointer;
+        margin: 0 10px;
+      };
+    };
+  };
+
+  .categoryList {
+    display: flex;
+    flex-flow: wrap;
+    margin-top: 10px;
+
+    .categoryItem {
+      width: 25%;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      color: #000;
+      text-decoration: none;
+      height: 50px;
+      margin: 10px 0;
+      transition: all 0.2s ease-in-out 0s;
+
+      &:hover {
+        color: #999;
+      };
+
+      img {
+        width: 45px;
+        height: 45px;
+        margin: 10px;
       };
     };
   };

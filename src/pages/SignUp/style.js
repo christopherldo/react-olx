@@ -47,6 +47,10 @@ export const PageArea = styled.div`
           float: left;
         };
 
+        select {
+          width: 50px;
+        };
+
         button {
           background-color: #0089ff;
           border: 0;

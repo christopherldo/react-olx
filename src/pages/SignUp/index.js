@@ -22,7 +22,7 @@ const Page = () => {
       setStateList(stateList);
     };
     getStates();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = async e => {
@@ -30,7 +30,7 @@ const Page = () => {
     setError('');
 
     if (name && stateLoc && email && password && password_confirmation) {
-      if(password !== password_confirmation) {
+      if (password !== password_confirmation) {
         setError('As senhas não coincidem');
         return;
       };
@@ -79,7 +79,7 @@ const Page = () => {
                 disabled={disabled}
               >
                 <option></option>
-                {stateList && stateList.map((item, key) => (
+                {stateList.map((item, key) => (
                   <option value={item.id} key={key}>{item.name}</option>
                 ))}
               </select>
