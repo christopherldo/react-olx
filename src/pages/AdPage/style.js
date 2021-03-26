@@ -26,7 +26,8 @@ export const Fake = styled.div`
   };
 
   background-color: #ddd;
-  height: ${props => props.height || 20}px;
+  height: ${props => props.fillContent ? 'unset' : props.height ? `${props.height}px` : `${20}px`};
+  flex: ${props => props.fillContent ? 1 : 'unset'};
   animation: loader 1.5s infinite ease-in-out;
 `;
 
@@ -49,24 +50,112 @@ export const PageArea = styled.div`
     flex: 1;
     margin-right: 20px;
 
-    .adImage {
+    .box {
+      display: flex;
+    };
 
+    .adImage {
+      width: 320px;
+      height: 320px;
+      margin-right: 20px;
     };
 
     .adInfo {
-      padding: 10px;
+      display: flex;
+      flex-flow: column;
+      flex: 1;
 
       .adName {
-        margin-bottom: 20px; 
+        margin: 20px 0;
+
+        h2 {
+          margin: 0;
+        };
+
+        small {
+          color: #999;
+        };
       };
 
       .adDescription {
+        display: flex;
+        justify-content: space-between;
+        flex-flow: column;
+        flex: 1;
 
+        .adDescriptionContent{
+          padding-right: 20px;
+        };
+
+        .adDescriptionContentBottom{
+          hr {
+            width: 100%;
+          };
+          
+          small {
+            display: block;
+            color: #999;
+            padding-bottom: 10px;
+          };
+        };
       };
     };
   };
 
   .rightSide {
     width: 250px;
+
+    .price span {
+      color: rgb(110,10,214);
+      display: block;
+      font-size: 27px;
+      font-weight: bold;
+    };
+
+    .box-blue{
+      background-color: rgb(110,10,214);
+    };
+
+    .contactSellerLink {
+      background-color: rgb(110,10,214);
+      color: #fff;
+      height: 30px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 0px 1px #999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: all 0.2s ease-in-out 0s;
+
+      &:hover {
+        background-color: rgb(110, 100, 255);
+      };
+    };
+
+    .createdBy{
+      
+      strong {
+        display: block;
+        margin-top: 2px;
+      };
+
+      small{
+        display: block;
+        color: #999;
+        margin-top: 10px;
+      };
+    };
   };
+`;
+
+export const AdImage = styled.div`
+  width: 320px;
+  height: 320px;
+  background-image: url(${props => props.background});
+  background-size: cover;
+  background-position: center;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 `;

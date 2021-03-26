@@ -36,10 +36,16 @@ const Page = () => {
       };
 
       setDisabled(true);
-      const json = await api.register(name, stateLoc, email, password);
+      const json = await api.register(name, stateLoc, email, password, password_confirmation);
 
       if (json.error) {
-        setError(json.error);
+        const jsonErrors = [];
+        for(let err in json.error){
+          console.log(err.msg);
+          jsonErrors.push(json.error[err].msg);
+        };
+
+        setError(jsonErrors.join(', '));
       } else {
         doLogin(json.token);
         window.location.href = '/';
@@ -80,7 +86,7 @@ const Page = () => {
               >
                 <option></option>
                 {stateList.map((item, key) => (
-                  <option value={item.id} key={key}>{item.name}</option>
+                  <option value={item.uf} key={key}>{item.name}</option>
                 ))}
               </select>
             </div>

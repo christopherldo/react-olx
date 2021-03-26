@@ -22,7 +22,13 @@ const Page = () => {
       const json = await api.login(email, password);
 
       if (json.error) {
-        setError(json.error);
+        const jsonErrors = [];
+        for(let err in json.error){
+          console.log(err.msg);
+          jsonErrors.push(json.error[err].msg);
+        };
+
+        setError(jsonErrors.join(', '));
       } else {
         doLogin(json.token, rememberLogin);
         window.location.href = '/';

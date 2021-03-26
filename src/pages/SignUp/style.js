@@ -40,15 +40,8 @@ export const PageArea = styled.div`
           };
         };
 
-        input[type="checkbox"]{
-          width: unset;
-          margin: 0;
-          align-self: flex-start;
-          float: left;
-        };
-
         select {
-          width: 50px;
+          width: 100%;
         };
 
         button {

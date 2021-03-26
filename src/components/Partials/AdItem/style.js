@@ -17,13 +17,17 @@ export const AdItem = styled.div`
       border-color: #777;
     };
 
-    .itemImage img {
-      width: 100%;
-      border-radius: 5px;
-    };
-
     .itemName {
       font-weight: bold;
     };
   };
+`;
+
+export const AdImage = styled.div`
+  height: 204px;
+  width: 100%;
+  border-radius: 5px;
+  background-image: url(${props => props.defaultImage});
+  background-size: cover;
+  background-position: center;
 `;

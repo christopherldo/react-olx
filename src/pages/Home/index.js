@@ -17,7 +17,9 @@ const Page = () => {
       const stateList = await api.getStates();
       setStateList(stateList);
     };
-    getStates();
+    setTimeout(() => {
+      getStates();
+    }, 200);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -26,7 +28,9 @@ const Page = () => {
       const stateList = await api.getCategories();
       setCategories(stateList);
     };
-    getCategories();
+    setTimeout(() => {
+      getCategories();
+    }, 200);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -38,7 +42,9 @@ const Page = () => {
       });
       setAdList(json.ads);
     };
-    getRecentAds();
+    setTimeout(() => {
+      getRecentAds();
+    }, 200);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -52,7 +58,7 @@ const Page = () => {
               <select name="state">
                 <option></option>
                 {stateList.map((item, key) => (
-                  <option value={item.name} key={key}>{item.name}</option>
+                  <option value={item.uf} key={key}>{item.uf}</option>
                 ))}
               </select>
               <button>Pesquisar</button>
@@ -81,7 +87,7 @@ const Page = () => {
           <hr />
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex ducimus minus obcaecati excepturi blanditiis sapiente facere nobis nihil saepe illum eaque omnis iusto debitis, maxime aspernatur quibusdam quos. Explicabo, distinctio!
           Modi, facilis nam. Ea maiores, optio, fugit quasi suscipit temporibus dicta est ratione quia veniam expedita at pariatur? Cum, autem doloremque rem deleniti a eum tenetur iste. Laudantium, ab saepe.
-          Iusto quae, architecto dolore excepturi, consectetur natus ab, eaque voluptate eius recusandae itaque aspernatur neque delectus corrupti velit est voluptatibus corporis dolor ad! Porro ea necessitatibus doloribus molestiae omnis? Repudiandae?
+          Iusto quae, architecto dolore excepturi, consectetur natus ab, eaque voluptate eius recusandae itaque aspernatur neque delectus corrupti velit est voluptatibus corporis dolor ad! Porro ea necessitatibus doloribus molestiae omnis?
         </PageArea>
       </PageContainer>
     </>

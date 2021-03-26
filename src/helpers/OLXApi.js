@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import qs from 'qs';
 
-const BASEAPI = 'http://alunos.b7web.com.br:501';
+const BASEAPI = 'http://127.0.0.1:3001/api';
 
 const apiFetchGet = async (endpoint, body = {}) => {
   if (body.token === undefined) {
@@ -60,12 +60,13 @@ const OLXApi = () => ({
     );
     return json;
   },
-  register: async (name, stateLoc, email, password) => {
+  register: async (name, stateLoc, email, password, password_confirmation) => {
     const json = await apiFetchPost(
       '/user/signup', {
         name,
         email,
         password,
+        password_confirmation,
         state: stateLoc,
       },
     );

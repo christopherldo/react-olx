@@ -1,11 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { AdItem } from './style';
+import { AdItem, AdImage } from './style';
 
 const Component = props => {
   let price = '';
 
-  if (props.data.priceNegotiable) {
+  if (props.data.price_negotiable) {
     price = 'Preço Negociável';
   } else {
     price = parseFloat(props.data.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -13,9 +13,9 @@ const Component = props => {
 
   return (
     <AdItem className="aditem">
-      <Link to={`/ad/${props.data.id}`}>
+      <Link to={`/ad/${props.data.public_id}`}>
         <div className="itemImage">
-          <img src={props.data.image} alt={props.data.title} />
+          <AdImage defaultImage={props.data.image}/>
         </div>
         <div className="itemName">
           {props.data.title}

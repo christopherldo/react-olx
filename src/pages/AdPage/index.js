@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Slide } from 'react-slideshow-image';
+import 'react-slideshow-image/dist/styles.css';
 import useApi from '../../helpers/OLXApi';
-import { PageArea, Fake } from './style';
+import { PageArea, Fake, AdImage } from './style';
 import { PageContainer } from '../../components';
 
 const Page = () => {
@@ -20,8 +22,8 @@ const Page = () => {
     };
     setTimeout(() => {
       getAdInfo(id);
-    }, 1000);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, 200);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const formatDate = date => {
@@ -40,33 +42,50 @@ const Page = () => {
     return `${currentDay} de ${months[currentMotnh]} de ${currentYear}`;
   };
 
+  const formatPrice = price => {
+    return parseFloat(price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  };
+
   return (
     <PageContainer>
       <PageArea>
         <div className="leftSide">
           <div className="box">
             <div className="adImage">
-              {loading && <Fake height={300} />}
+              {loading
+                ? <Fake height={320} />
+                : adInfo.images && <Slide>{adInfo.images.map((item, key) => (
+                  <div key={key} className="each-slide">
+                    <AdImage background={item} />
+                  </div>
+                ))}</Slide>
+              }
             </div>
             <div className="adInfo">
               <div className="adName">
                 {loading
-                ? <Fake height={40} />
-                : <>
+                  ? <Fake height={55} />
+                  : 
+                  <>
                     <h2>{adInfo.title}</h2>
-                    <small>Criado em: {formatDate(adInfo.dateCreated)}</small>
+                    <small>Criado em: {formatDate(adInfo.date_created)}</small>
                   </>
                 }
               </div>
               <div className="adDescription">
                 {loading
-                ? 
-                  <Fake height={100} />
-                : <>
-                  {adInfo.description}
-                  <hr/>
-                  <small>Visualizações: {adInfo.views}</small>
-                </>
+                  ?
+                  <Fake height={100} fillContent />
+                  : 
+                  <>
+                    <div className="adDescriptionContent">
+                      {adInfo.description}
+                    </div>
+                    <div className="adDescriptionContentBottom">
+                      <hr />
+                      <small>Visualizações: {adInfo.views}</small>
+                    </div>
+                  </>
                 }
               </div>
             </div>
@@ -74,10 +93,38 @@ const Page = () => {
         </div>
         <div className="rightSide">
           <div className="box box--padding">
-            {loading && <Fake height={30} />}
+            {loading
+              ? <Fake height={59} />
+              : adInfo.price_negotiable
+                ? "Preço negociável"
+                :
+                <div className="price">
+                  Preço: <span>{formatPrice(adInfo.price)}</span>
+                </div>
+            }
           </div>
-          <div className="box box--padding">
-            {loading && <Fake height={100} />}
+          {loading
+              ? <div className="box-blue box box--padding">
+                  <Fake height={15} />
+                </div>
+              : <a
+                  href={`mailto:${adInfo.user_info.email}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="contactSellerLink"
+                >Fale com o vendedor</a>
+          }
+          <div className="createdBy box box--padding">
+            {loading
+              ? <Fake height={102} />
+              :
+              <>
+                Criado por:
+                <strong>{adInfo.user_info.name}</strong>
+                <small>E-mail: {adInfo.user_info.email}</small>
+                <small>Estado: {adInfo.user_info.state}</small>
+              </>
+            }
           </div>
         </div>
       </PageArea>
