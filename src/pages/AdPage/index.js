@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useApi from '../../helpers/OLXApi';
 import { PageArea, Fake } from './style';
@@ -11,6 +11,35 @@ const Page = () => {
   const [loading, setLoading] = useState(true);
   const [adInfo, setAdInfo] = useState({});
 
+  useEffect(() => {
+    const getAdInfo = async id => {
+      const getOtherAds = true;
+      const json = await api.getAd(id, getOtherAds);
+      setAdInfo(json);
+      setLoading(false);
+    };
+    setTimeout(() => {
+      getAdInfo(id);
+    }, 1000);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const formatDate = date => {
+    const currentDate = new Date(date);
+
+    const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+      'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',
+    ];
+
+    let currentDay = currentDate.getDate();
+    const currentMotnh = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+
+    currentDay = currentDay < 10 ? '0' + currentDay : currentDay;
+
+    return `${currentDay} de ${months[currentMotnh]} de ${currentYear}`;
+  };
+
   return (
     <PageContainer>
       <PageArea>
@@ -21,10 +50,24 @@ const Page = () => {
             </div>
             <div className="adInfo">
               <div className="adName">
-                {loading && <Fake height={40} />}
+                {loading
+                ? <Fake height={40} />
+                : <>
+                    <h2>{adInfo.title}</h2>
+                    <small>Criado em: {formatDate(adInfo.dateCreated)}</small>
+                  </>
+                }
               </div>
               <div className="adDescription">
-                {loading && <Fake height={100} />}
+                {loading
+                ? 
+                  <Fake height={100} />
+                : <>
+                  {adInfo.description}
+                  <hr/>
+                  <small>Visualizações: {adInfo.views}</small>
+                </>
+                }
               </div>
             </div>
           </div>

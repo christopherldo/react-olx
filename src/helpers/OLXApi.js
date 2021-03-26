@@ -90,6 +90,16 @@ const OLXApi = () => ({
 
     return json;
   },
+  getAd: async (id, otherAds = false) => {
+    const json = await apiFetchGet(
+      '/ad/item',
+      {
+        id,
+        other: otherAds,
+      },
+    );
+    return json;
+  },
 });
 
 export default OLXApi;

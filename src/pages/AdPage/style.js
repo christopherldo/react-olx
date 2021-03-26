@@ -1,8 +1,33 @@
 import styled from 'styled-components';
 
 export const Fake = styled.div`
+  @keyframes loader {
+    0% {
+        background-color: rgba(165, 165, 165, 0.1);
+    }
+    50% {
+        background-color: rgba(165, 165, 165, 0.3);
+    }
+    100% {
+        background-color: rgba(165, 165, 165, 0.1);
+    }
+}
+
+  @-webkit-keyframes loader {
+      0% {
+          background-color: rgba(165, 165, 165, 0.1);
+      }
+      50% {
+          background-color: rgba(165, 165, 165, 0.3);
+      }
+      100% {
+          background-color: rgba(165, 165, 165, 0.1);
+      }
+  };
+
   background-color: #ddd;
   height: ${props => props.height || 20}px;
+  animation: loader 1.5s infinite ease-in-out;
 `;
 
 export const PageArea = styled.div`
