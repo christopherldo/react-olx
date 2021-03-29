@@ -2,7 +2,7 @@ import React from 'react'
 import { Switch } from 'react-router-dom';
 import { RouteHandler } from './components';
 
-import { Home, About, NotFound, SignIn, SignUp, AdPage } from './pages';
+import { Home, About, NotFound, SignIn, SignUp, AdPage, AddAd } from './pages';
 
 const Routes = () => {
   return (
@@ -28,7 +28,7 @@ const Routes = () => {
       </RouteHandler>
 
       <RouteHandler private exact path="/post-an-add">
-        <About />
+        <AddAd />
       </RouteHandler>
 
       <RouteHandler>
