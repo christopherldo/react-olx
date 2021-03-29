@@ -1,34 +1,39 @@
 import React from 'react'
-import { Switch, Route } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
+import { RouteHandler } from './components';
 
 import { Home, About, NotFound, SignIn, SignUp, AdPage } from './pages';
 
 const Routes = () => {
   return (
     <Switch>
-      <Route exact path="/">
+      <RouteHandler exact path="/">
         <Home />
-      </Route>
+      </RouteHandler>
 
-      <Route exact path="/about">
+      <RouteHandler exact path="/about">
         <About />
-      </Route>
+      </RouteHandler>
 
-      <Route exact path="/signin">
+      <RouteHandler exact path="/signin">
         <SignIn />
-      </Route>
+      </RouteHandler>
 
-      <Route exact path="/signup">
+      <RouteHandler exact path="/signup">
         <SignUp />
-      </Route>
+      </RouteHandler>
 
-      <Route exact path="/ad/:id">
+      <RouteHandler exact path="/ad/:id">
         <AdPage />
-      </Route>
+      </RouteHandler>
 
-      <Route>
+      <RouteHandler private exact path="/post-an-add">
+        <About />
+      </RouteHandler>
+
+      <RouteHandler>
         <NotFound />
-      </Route>
+      </RouteHandler>
     </Switch>
   );
 };

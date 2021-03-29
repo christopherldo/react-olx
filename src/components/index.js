@@ -5,3 +5,4 @@ export { default as ErrorMessage } from './MainComponents/ErrorMessage';
 export { default as Header } from './Partials/Header';
 export { default as Footer } from './Partials/Footer';
 export { default as AdItem } from './Partials/AdItem';
+export { default as RouteHandler } from './RouteHandler';

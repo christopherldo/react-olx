@@ -19,7 +19,7 @@ const Component = () => {
           <Link to="/">
             <span className="logo-1">O</span>
             <span className="logo-2">L</span>
-            <span className="logo-3">X</span>
+            <span className="logo-3">Z</span>
           </Link>
         </div>
         <nav>
@@ -29,15 +29,14 @@ const Component = () => {
               <>
                 <li><Link to="/my-account">Minha Conta</Link></li>
                 <li><button onClick={handleLogout}>Sair</button></li>
-                <li><Link to="/post-an-add" className="button">Poste um anúncio +</Link></li>
               </>
               :
               <>
                 <li><Link to="/signin">Login</Link></li>
                 <li><Link to="/signup">Cadastre-se</Link></li>
-                <li><Link to="/signin" className="button">Poste um anúncio +</Link></li>
               </>
             }
+            <li><Link to="/post-an-add" className="button">Poste um anúncio +</Link></li>
           </ul>
         </nav>
       </div>

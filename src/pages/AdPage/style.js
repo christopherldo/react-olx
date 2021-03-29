@@ -31,6 +31,19 @@ export const Fake = styled.div`
   animation: loader 1.5s infinite ease-in-out;
 `;
 
+export const BreadCrumb = styled.div`
+  font-size: 13px;
+  margin-top: 20px;
+
+  a {
+    display: inline-block;
+    margin: 0 5px;
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+  };
+`;
+
 export const PageArea = styled.div`
   margin-top: 20px;
   display: flex;
@@ -158,4 +171,19 @@ export const AdImage = styled.div`
   background-position: center;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
+`;
+
+export const OthersArea = styled.div`
+  
+  h2 {
+    font-size: 20px;
+  };
+
+  .list {
+    display: flex;
+
+    .aditem {
+      width: 25%;
+    };
+  };
 `;
