@@ -1,6 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import useApi from '../../helpers/OLXApi';
-import { doLogin } from '../../helpers/AuthHandler';
+import MaskedInput from 'react-text-mask';
+import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import { PageArea } from './style';
 import { PageContainer, PageTitle, ErrorMessage } from '../../components';
 
@@ -11,46 +12,64 @@ const Page = () => {
 
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
+  const [categories, setCategories] = useState([]);
   const [price, setPrice] = useState('');
   const [priceNegotiable, setPriceNegotiable] = useState(false)
   const [description, setDescription] = useState('');
   const [disabled, setDisabled] = useState(false);
   const [error, setError] = useState('');
 
-  // const handleSubmit = async e => {
-  //   e.preventDefault();
-  //   setError('');
+  useEffect(() => {
+    const getCategories = async () => {
+      const categories = await api.getCategories();
+      setCategories(categories);
+    };
+    getCategories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  //   if (email && password) {
-  //     setDisabled(true);
-  //     const json = await api.login(email, password);
+  const handleSubmit = async e => {
+    e.preventDefault();
+    setError('');
 
-  //     if (json.error) {
-  //       const jsonErrors = [];
-  //       for(let err in json.error){
-  //         console.log(err.msg);
-  //         jsonErrors.push(json.error[err].msg);
-  //       };
+    // if (email && password) {
+    // setDisabled(true);
+    //   const json = await api.login(email, password);
 
-  //       setError(jsonErrors.join(', '));
-  //     } else {
-  //       doLogin(json.token, rememberLogin);
-  //       window.location.href = '/';
-  //       return;
-  //     };
-  //   } else {
-  //     setError('Preencha todos os campos.')
-  //   };
+    //   if (json.error) {
+    //     const jsonErrors = [];
+    //     for(let err in json.error){
+    //       console.log(err.msg);
+    //       jsonErrors.push(json.error[err].msg);
+    //     };
 
-  //   setDisabled(false);
-  // };
+    //     setError(jsonErrors.join(', '));
+    //   } else {
+    //     doLogin(json.token, rememberLogin);
+    //     window.location.href = '/';
+    //     return;
+    //   };
+    // } else {
+    //   setError('Preencha todos os campos.')
+    // };
+
+    setDisabled(false);
+  };
+
+  const priceMask = createNumberMask({
+    prefix: 'R$ ',
+    includeThousandsSeparator: true,
+    thousandsSeparatorSymbol: '.',
+    allowDecimal: true,
+    decimalSymbol: ',',
+  });
 
   return (
     <PageContainer>
       <PageTitle>Postar um Anúncio</PageTitle>
       <PageArea>
         {error && <ErrorMessage>{error}</ErrorMessage>}
-        <form>
+        <form onSubmit={handleSubmit}>
           <label className="area">
             <div className="area--title">Título:</div>
             <div className="area--input">
@@ -66,15 +85,27 @@ const Page = () => {
           <label className="area">
             <div className="area--title">Categoria:</div>
             <div className="area--input">
-              <select>
+              <select
+                disabled={disabled}
+                onChange={e => setCategory(e.target.value)}
+              >
                 <option></option>
+                {categories.map((item, key) => (
+                  <option key={key} value={item.slug}>{item.name}</option>
+                ))}
               </select>
             </div>
           </label>
           <label className="area">
             <div className="area--title">Preço:</div>
             <div className="area--input">
-              
+              <MaskedInput
+                mask={priceMask}
+                placeholder="R$ "
+                disabled={disabled || priceNegotiable}
+                value={price}
+                onChange={e => setPrice(e.target.value)}
+              />
             </div>
           </label>
           <label className="area">
