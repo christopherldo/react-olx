@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import useApi from '../../helpers/OLXApi';
 import MaskedInput from 'react-text-mask';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
@@ -7,6 +8,7 @@ import { PageContainer, PageTitle, ErrorMessage } from '../../components';
 
 const Page = () => {
   const api = useApi();
+  const history = useHistory();
 
   const fileField = useRef();
 
@@ -32,26 +34,39 @@ const Page = () => {
     e.preventDefault();
     setError('');
 
-    // if (email && password) {
-    // setDisabled(true);
-    //   const json = await api.login(email, password);
+    if (title && category && price && description) {
+      const fData = new FormData();
+      fData.append('title', title);
+      fData.append('category', category);
+      fData.append('price', price);
+      fData.append('price_negotiable', priceNegotiable);
+      fData.append('description', description);
+      
+      if(fileField.current.files.length > 0) {
+        for(let i = 0; i < fileField.current.files.length; i++){
+          fData.append('image', fileField.current.files[i]);
+        };
+      };
 
-    //   if (json.error) {
-    //     const jsonErrors = [];
-    //     for(let err in json.error){
-    //       console.log(err.msg);
-    //       jsonErrors.push(json.error[err].msg);
-    //     };
+      const json = await api.addAd(fData);
 
-    //     setError(jsonErrors.join(', '));
-    //   } else {
-    //     doLogin(json.token, rememberLogin);
-    //     window.location.href = '/';
-    //     return;
-    //   };
-    // } else {
-    //   setError('Preencha todos os campos.')
-    // };
+      setDisabled(true);
+
+      if (json.error) {
+        const jsonErrors = [];
+        for(let err in json.error){
+          console.log(err.msg);
+          jsonErrors.push(json.error[err].msg);
+        };
+
+        setError(jsonErrors.join(', '));
+      } else {
+        history.push(`/ad/${json.public_id}`);
+        return;
+      };
+    } else {
+      setError('Preencha todos os campos.')
+    };
 
     setDisabled(false);
   };
@@ -137,6 +152,7 @@ const Page = () => {
                 disabled={disabled}
                 ref={fileField}
                 multiple
+                accept="image/jpg, image/jpeg, image/png, image/webp"
               />
             </div>
           </label>

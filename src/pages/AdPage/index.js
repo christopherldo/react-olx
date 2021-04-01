@@ -58,7 +58,7 @@ const Page = () => {
       <BreadCrumb>
         <div className="box">
           {loading
-            ? <Fake height={50} />
+            ? <Fake height={18} />
             :
             <>
               Você está aqui:

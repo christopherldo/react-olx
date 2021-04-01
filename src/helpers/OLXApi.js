@@ -50,6 +50,32 @@ const apiFetchPost = async (endpoint, body) => {
   return json;
 };
 
+const apiFetchFile = async (endpoint, body) => {
+  const headers = {};
+
+  if (body.token === undefined) {
+    const token = Cookies.get('token');
+    if (token) {
+      headers.Authorization = `Bearer ${token}`
+    };
+  };
+
+  const res = await fetch(BASEAPI + endpoint, {
+    method: 'POST',
+    headers,
+    body,
+  });
+
+  const json = await res.json();
+
+  if (json.notallowed) {
+    window.location.href = '/signin';
+    return;
+  };
+
+  return json;
+};
+
 const OLXApi = () => ({
   login: async (email, password) => {
     const json = await apiFetchPost(
@@ -98,6 +124,13 @@ const OLXApi = () => ({
         id,
         other: otherAds,
       },
+    );
+    return json;
+  },
+  addAd: async fData => {
+    const json = await apiFetchFile(
+      '/ad/add',
+      fData,
     );
     return json;
   },
