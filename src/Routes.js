@@ -2,7 +2,16 @@ import React from 'react'
 import { Switch } from 'react-router-dom';
 import { RouteHandler } from './components';
 
-import { Home, About, NotFound, SignIn, SignUp, AdPage, AddAd } from './pages';
+import {
+  Home,
+  About,
+  NotFound,
+  SignIn,
+  SignUp,
+  AdPage,
+  AddAd,
+  Ads
+} from './pages';
 
 const Routes = () => {
   return (
@@ -25,6 +34,10 @@ const Routes = () => {
 
       <RouteHandler exact path="/ad/:id">
         <AdPage />
+      </RouteHandler>
+
+      <RouteHandler exact path="/ads">
+        <Ads />
       </RouteHandler>
 
       <RouteHandler private exact path="/post-an-add">
