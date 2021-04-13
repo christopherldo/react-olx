@@ -5,6 +5,8 @@ import { PageContainer } from '../../components';
 import { useLocation, useHistory } from 'react-router-dom';
 import { AdItem } from '../../components';
 
+let timer;
+
 const Page = () => {
   const api = useApi();
   const history = useHistory();
@@ -21,6 +23,19 @@ const Page = () => {
   const [stateList, setStateList] = useState([]);
   const [categories, setCategories] = useState([]);
   const [adList, setAdList] = useState([]);
+  const [resultOpacity, setResultOpacity] = useState(1);
+
+  const getAdsList = async () => {
+    const json = await api.getAds({
+      sort: 'desc',
+      limit: 15,
+      q,
+      cat,
+      state,
+    });
+    setAdList(json.ads);
+    setResultOpacity(1);
+  };
 
   useEffect(() => {
     const queryQ = query.get('q');
@@ -56,20 +71,6 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
-    const getRecentAds = async () => {
-      const json = await api.getAds({
-        sort: 'desc',
-        limit: 8,
-      });
-      setAdList(json.ads);
-    };
-    setTimeout(() => {
-      getRecentAds();
-    }, 200);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     const queryString = [];
     q && queryString.push(`q=${q}`);
     cat && queryString.push(`cat=${cat}`);
@@ -78,12 +79,22 @@ const Page = () => {
     history.replace({
       search: `?${queryString.join('&')}`,
     });
-  }, [history, q, cat, state]);
+
+    if(timer) {
+      clearTimeout(timer);
+    };
+
+    timer = setTimeout(getAdsList, 500);
+    setResultOpacity(0.5);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [q, cat, state, history]);
 
   return (
     <>
       <PageContainer>
-        <PageArea>
+        <PageArea
+          resultOpacity={resultOpacity}
+        >
           <div className="leftSide">
             <form method="GET">
               <input
@@ -118,7 +129,14 @@ const Page = () => {
             </form>
           </div>
           <div className="rightSide">
-            ...
+            <h2>Resultados</h2>
+            <div className="list">
+              {adList.map((item, key) => (
+                <AdItem key={key} data={item}>
+
+                </AdItem>
+              ))}
+            </div>
           </div>
         </PageArea>
       </PageContainer>
