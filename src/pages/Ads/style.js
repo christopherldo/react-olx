@@ -70,6 +70,12 @@ export const PageArea = styled.div`
       font-size: 18px;
     };
 
+    .listWarning {
+      padding: 30px;
+      padding-top: 0;
+      text-align: center;
+    };
+
     .list {
       display: flex;
       flex-flow: wrap;

@@ -24,8 +24,13 @@ const Page = () => {
   const [categories, setCategories] = useState([]);
   const [adList, setAdList] = useState([]);
   const [resultOpacity, setResultOpacity] = useState(1);
+  const [warningMessage, setWarningMessage] = useState('');
+  const [error, setError] = useState(false);
 
   const getAdsList = async () => {
+    setError(false);
+    setAdList([]);
+
     const json = await api.getAds({
       sort: 'desc',
       limit: 15,
@@ -33,19 +38,30 @@ const Page = () => {
       cat,
       state,
     });
-    setAdList(json.ads);
-    setResultOpacity(1);
+    if (json.error) {
+      const jsonErrors = [];
+      for (let err in json.error) {
+        jsonErrors.push(json.error[err].msg);
+      };
+      
+      setError(true);
+      setWarningMessage(jsonErrors.join(', '));
+    } else {
+      setAdList(json.ads);
+      setResultOpacity(1);
+      setWarningMessage('');
+    };
   };
 
   useEffect(() => {
     const queryQ = query.get('q');
     const queryCat = query.get('cat');
     const queryState = query.get('state');
-    
+
     queryQ && setQ(queryQ);
     queryCat && setCat(queryCat);
     queryState && setState(queryState);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -71,6 +87,7 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
+    setWarningMessage('Carregando...');
     const queryString = [];
     q && queryString.push(`q=${q}`);
     cat && queryString.push(`cat=${cat}`);
@@ -80,13 +97,13 @@ const Page = () => {
       search: `?${queryString.join('&')}`,
     });
 
-    if(timer) {
+    if (timer) {
       clearTimeout(timer);
     };
 
     timer = setTimeout(getAdsList, 500);
     setResultOpacity(0.5);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q, cat, state, history]);
 
   return (
@@ -129,14 +146,16 @@ const Page = () => {
             </form>
           </div>
           <div className="rightSide">
-            <h2>Resultados</h2>
-            <div className="list">
-              {adList.map((item, key) => (
-                <AdItem key={key} data={item}>
+            {warningMessage && <div className="listWarning">{warningMessage}</div>}
+            {error === false &&
+              <div className="list">
+                {adList.map((item, key) => (
+                  <AdItem key={key} data={item}>
 
-                </AdItem>
-              ))}
-            </div>
+                  </AdItem>
+                ))}
+              </div>
+            }
           </div>
         </PageArea>
       </PageContainer>
