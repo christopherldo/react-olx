@@ -7,6 +7,7 @@ import { AdItem } from '../../components';
 
 const Page = () => {
   const api = useApi();
+  const history = useHistory();
 
   const useQueryString = () => {
     return new URLSearchParams(useLocation().search);
@@ -22,10 +23,15 @@ const Page = () => {
   const [adList, setAdList] = useState([]);
 
   useEffect(() => {
-    setQ(query.get('q'));
-    setCat(query.get('cat'));
-    setState(query.get('state'));
-  }, [query]);
+    const queryQ = query.get('q');
+    const queryCat = query.get('cat');
+    const queryState = query.get('state');
+    
+    queryQ && setQ(queryQ);
+    queryCat && setCat(queryCat);
+    queryState && setState(queryState);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const getStates = async () => {
@@ -63,6 +69,17 @@ const Page = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    const queryString = [];
+    q && queryString.push(`q=${q}`);
+    cat && queryString.push(`cat=${cat}`);
+    state && queryString.push(`state=${state}`);
+
+    history.replace({
+      search: `?${queryString.join('&')}`,
+    });
+  }, [history, q, cat, state]);
+
   return (
     <>
       <PageContainer>
@@ -74,10 +91,11 @@ const Page = () => {
                 name="q"
                 placeholder="O que você procura?"
                 value={q}
+                onChange={e => setQ(e.target.value)}
               />
 
               <div className="filterName">Estado:</div>
-              <select name="state" value={state}>
+              <select name="state" value={state} onChange={e => setState(e.target.value)}>
                 <option></option>
                 {stateList.map((item, key) => (
                   <option key={key} value={item.uf}>{item.uf}</option>
@@ -87,7 +105,11 @@ const Page = () => {
               <div className="filterName">Categoria:</div>
               <ul>
                 {categories.map((item, key) => (
-                  <li key={key} className={`categoryItem ${cat === item.slug && 'active'}`}>
+                  <li
+                    key={key}
+                    className={`categoryItem ${cat === item.slug && 'active'}`}
+                    onClick={() => setCat(item.slug)}
+                  >
                     <img src={item.img} alt={item.name} />
                     <span>{item.name}</span>
                   </li>

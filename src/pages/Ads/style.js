@@ -42,6 +42,8 @@ export const PageArea = styled.div`
       border-radius: 5px;
       color: 5px;
       cursor: pointer;
+      transition: all 0.2s ease-in-out 0s;
+      margin: 5px 0;
 
       img {
         width: 25px;

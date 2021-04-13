@@ -5,7 +5,7 @@ import 'react-slideshow-image/dist/styles.css';
 import { Link } from 'react-router-dom';
 import useApi from '../../helpers/OLXApi';
 import { BreadCrumb, PageArea, Fake, AdImage, OthersArea } from './style';
-import { PageContainer, AdItem } from '../../components';
+import { PageContainer, AdItem, ErrorMessage } from '../../components';
 
 const Page = () => {
   const api = useApi();
@@ -13,6 +13,7 @@ const Page = () => {
 
   const [loading, setLoading] = useState(true);
   const [adInfo, setAdInfo] = useState({});
+  const [error, setError] = useState('');
 
   useEffect(() => {
     window.scrollTo({
@@ -24,6 +25,17 @@ const Page = () => {
     const getAdInfo = async id => {
       const getOtherAds = true;
       const json = await api.getAd(id, getOtherAds);
+
+      if (json.error) {
+        const jsonErrors = [];
+        for (let err in json.error) {
+          console.log(err.msg);
+          jsonErrors.push(json.error[err].msg);
+        };
+
+        setError(jsonErrors.join(', '));
+      };
+
       setAdInfo(json);
       setLoading(false);
     };
@@ -55,123 +67,128 @@ const Page = () => {
 
   return (
     <PageContainer>
-      <BreadCrumb>
-        <div className="box">
-          {loading
-            ? <Fake height={18} />
-            :
-            <>
-              Você está aqui:
-              <Link to="/">Home</Link>
-              &gt;
-              <Link to={`/ads?state=${adInfo.user_info.state}`}>
-                {adInfo.user_info.state}
-              </Link>
-              &gt;
-              <Link to={`/ads?state=${adInfo.user_info.state}&cat=${adInfo.category}`}>
-                {adInfo.category}
-              </Link>
-              &gt; {adInfo.title}
-            </>
-          }
-        </div>
-      </BreadCrumb>
-
-      <PageArea>
-        <div className="leftSide">
-          <div className="box">
-            <div className="adImage">
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      {error === '' &&
+        <>
+          <BreadCrumb>
+            <div className="box">
               {loading
-                ? <Fake height={320} />
-                : adInfo.images && <Slide>{adInfo.images.map((item, key) => (
-                  <div key={key} className="each-slide">
-                    <AdImage background={item} />
-                  </div>
-                ))}</Slide>
+                ? <Fake height={18} />
+                :
+                <>
+                  Você está aqui:
+               <Link to="/">Home</Link>
+               &gt;
+               <Link to={`/ads?state=${adInfo.user_info.state}`}>
+                    {adInfo.user_info.state}
+                  </Link>
+               &gt;
+               <Link to={`/ads?state=${adInfo.user_info.state}&cat=${adInfo.category.slug}`}>
+                    {adInfo.category.name}
+                  </Link>
+               &gt; {adInfo.title}
+                </>
               }
             </div>
-            <div className="adInfo">
-              <div className="adName">
-                {loading
-                  ? <Fake height={55} />
-                  :
-                  <>
-                    <h2>{adInfo.title}</h2>
-                    <small>Criado em: {formatDate(adInfo.date_created)}</small>
-                  </>
-                }
-              </div>
-              <div className="adDescription">
-                {loading
-                  ?
-                  <Fake height={100} fillContent />
-                  :
-                  <>
-                    <div className="adDescriptionContent">
-                      {adInfo.description}
-                    </div>
-                    <div className="adDescriptionContentBottom">
-                      <hr />
-                      <small>Visualizações: {adInfo.views}</small>
-                    </div>
-                  </>
-                }
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="rightSide">
-          <div className="box box--padding">
-            {loading
-              ? <Fake height={59} />
-              : adInfo.price_negotiable
-                ? "Preço negociável"
-                :
-                <div className="price">
-                  Preço: <span>{formatPrice(adInfo.price)}</span>
+          </BreadCrumb>
+
+          <PageArea>
+            <div className="leftSide">
+              <div className="box">
+                <div className="adImage">
+                  {loading
+                    ? <Fake height={320} />
+                    : adInfo.images && <Slide>{adInfo.images.map((item, key) => (
+                      <div key={key} className="each-slide">
+                        <AdImage background={item} />
+                      </div>
+                    ))}</Slide>
+                  }
                 </div>
-            }
-          </div>
-          {loading
-            ? <div className="box-blue box box--padding">
-              <Fake height={15} />
+                <div className="adInfo">
+                  <div className="adName">
+                    {loading
+                      ? <Fake height={55} />
+                      :
+                      <>
+                        <h2>{adInfo.title}</h2>
+                        <small>Criado em: {formatDate(adInfo.date_created)}</small>
+                      </>
+                    }
+                  </div>
+                  <div className="adDescription">
+                    {loading
+                      ?
+                      <Fake height={100} fillContent />
+                      :
+                      <>
+                        <div className="adDescriptionContent">
+                          {adInfo.description}
+                        </div>
+                        <div className="adDescriptionContentBottom">
+                          <hr />
+                          <small>Visualizações: {adInfo.views}</small>
+                        </div>
+                      </>
+                    }
+                  </div>
+                </div>
+              </div>
             </div>
-            : <a
-              href={`mailto:${adInfo.user_info.email}`}
-              target="_blank"
-              rel="noreferrer"
-              className="contactSellerLink"
-            >Fale com o vendedor</a>
-          }
-          <div className="createdBy box box--padding">
+            <div className="rightSide">
+              <div className="box box--padding">
+                {loading
+                  ? <Fake height={59} />
+                  : adInfo.price_negotiable
+                    ? "Preço negociável"
+                    :
+                    <div className="price">
+                      Preço: <span>{formatPrice(adInfo.price)}</span>
+                    </div>
+                }
+              </div>
+              {loading
+                ? <div className="box-blue box box--padding">
+                  <Fake height={15} />
+                </div>
+                : <a
+                  href={`mailto:${adInfo.user_info.email}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="contactSellerLink"
+                >Fale com o vendedor</a>
+              }
+              <div className="createdBy box box--padding">
+                {loading
+                  ? <Fake height={102} />
+                  :
+                  <>
+                    Criado por:
+                 <strong>{adInfo.user_info.name}</strong>
+                    <small>E-mail: {adInfo.user_info.email}</small>
+                    <small>Estado: {adInfo.user_info.state}</small>
+                  </>
+                }
+              </div>
+            </div>
+          </PageArea>
+
+          <OthersArea>
             {loading
-              ? <Fake height={102} />
-              :
+              ? <Fake height={300} />
+              : adInfo.others &&
               <>
-                Criado por:
-                <strong>{adInfo.user_info.name}</strong>
-                <small>E-mail: {adInfo.user_info.email}</small>
-                <small>Estado: {adInfo.user_info.state}</small>
+                <h2>Outras ofertas do vendedor</h2>
+                <div className="list">
+                  {adInfo.others.map((item, key) => (
+                    <AdItem key={key} data={item} />
+                  ))}
+                </div>
               </>
             }
-          </div>
-        </div>
-      </PageArea>
-
-      <OthersArea>
-        {loading
-          ? <Fake height={300} />
-          : adInfo.others &&
-          <>
-            <h2>Outras ofertas do vendedor</h2>
-            <div className="list">
-              {adInfo.others.map((item, key) => (
-                <AdItem key={key} data={item} />
-              ))}
-            </div>
-          </>
-        }
-      </OthersArea>
+          </OthersArea>
+        </>
+      }
     </PageContainer>
   );
 };
