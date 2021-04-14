@@ -23,6 +23,8 @@ const Page = () => {
   const [stateList, setStateList] = useState([]);
   const [categories, setCategories] = useState([]);
   const [adList, setAdList] = useState([]);
+  const [adsTotal, setAdsTotal] = useState(0);
+  const [pagination, setPagination] = useState([]);
   const [resultOpacity, setResultOpacity] = useState(1);
   const [warningMessage, setWarningMessage] = useState('');
   const [error, setError] = useState(false);
@@ -33,7 +35,7 @@ const Page = () => {
 
     const json = await api.getAds({
       sort: 'desc',
-      limit: 15,
+      limit: 1,
       q,
       cat,
       state,
@@ -43,11 +45,12 @@ const Page = () => {
       for (let err in json.error) {
         jsonErrors.push(json.error[err].msg);
       };
-      
+
       setError(true);
       setWarningMessage(jsonErrors.join(', '));
     } else {
       setAdList(json.ads);
+      setAdsTotal(json.total);
       setResultOpacity(1);
       setWarningMessage('');
     };
@@ -106,6 +109,21 @@ const Page = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q, cat, state, history]);
 
+  useEffect(() => {
+    if (adList.length > 0) {
+      const pageCount = (Math.ceil(adsTotal / adList.length));
+      const pageCountArray = [];
+
+      for (let i = 1; i <= pageCount; i++) {
+        pageCountArray.push(i);
+      };
+
+      setPagination(pageCountArray);
+    } else {
+      setPagination([]);
+    };
+  }, [adsTotal, adList]);
+
   return (
     <>
       <PageContainer>
@@ -150,9 +168,14 @@ const Page = () => {
             {error === false &&
               <div className="list">
                 {adList.map((item, key) => (
-                  <AdItem key={key} data={item}>
-
-                  </AdItem>
+                  <AdItem key={key} data={item}></AdItem>
+                ))}
+              </div>
+            }
+            {pagination.length > 1 &&
+              <div className="pagination">
+                {pagination.map((item, key) => (
+                  <div className="pagItem" key={key}>{item}</div>
                 ))}
               </div>
             }
