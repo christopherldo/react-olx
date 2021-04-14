@@ -25,6 +25,9 @@ const Page = () => {
   const [adList, setAdList] = useState([]);
   const [adsTotal, setAdsTotal] = useState(0);
   const [pagination, setPagination] = useState([]);
+  const [lastPageDisplay, setLastPageDisplay] = useState(false);
+  const [nextPageDisplay, setNextPageDisplay] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const [resultOpacity, setResultOpacity] = useState(1);
   const [warningMessage, setWarningMessage] = useState('');
   const [error, setError] = useState(false);
@@ -33,12 +36,16 @@ const Page = () => {
     setError(false);
     setAdList([]);
 
+    const LIMIT = 15;
+    const offset = (currentPage - 1) * LIMIT;
+
     const json = await api.getAds({
       sort: 'desc',
-      limit: 1,
+      limit: LIMIT,
       q,
       cat,
       state,
+      offset,
     });
     if (json.error) {
       const jsonErrors = [];
@@ -53,6 +60,7 @@ const Page = () => {
       setAdsTotal(json.total);
       setResultOpacity(1);
       setWarningMessage('');
+      setError(false);
     };
   };
 
@@ -90,7 +98,11 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
+    clearTimeout(timer);
     setWarningMessage('Carregando...');
+    setCurrentPage(1);
+    setPagination([]);
+
     const queryString = [];
     q && queryString.push(`q=${q}`);
     cat && queryString.push(`cat=${cat}`);
@@ -110,25 +122,61 @@ const Page = () => {
   }, [q, cat, state, history]);
 
   useEffect(() => {
+    setLastPageDisplay(false);
+    setNextPageDisplay(false);
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+
     if (adList.length > 0) {
       const pageCount = (Math.ceil(adsTotal / adList.length));
       const pageCountArray = [];
 
-      for (let i = 1; i <= pageCount; i++) {
-        pageCountArray.push(i);
+      if (currentPage === 1) {
+        for (let i = 1; i <= pageCount && i <= 3; i++) {
+          pageCountArray.push(i);
+        };
+        setNextPageDisplay(true);
+      } else if (currentPage > 1 && currentPage < pageCount) {
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pageCountArray.push(i);
+        };
+        setLastPageDisplay(true);
+        setNextPageDisplay(true);
+      } else if (currentPage === 2 & pageCount === 2) {
+        for (let i = currentPage - 1; i <= currentPage; i++) {
+          pageCountArray.push(i);
+        };
+        setLastPageDisplay(true);
+      } else {
+        for (let i = currentPage - 2; i <= currentPage; i++) {
+          pageCountArray.push(i);
+        };
+        setLastPageDisplay(true);
       };
 
       setPagination(pageCountArray);
     } else {
       setPagination([]);
     };
-  }, [adsTotal, adList]);
+  }, [adsTotal, adList, currentPage]);
+
+  useEffect(() => {
+    setResultOpacity(0.5);
+    timer = setTimeout(getAdsList, 500);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
 
   return (
     <>
       <PageContainer>
         <PageArea
           resultOpacity={resultOpacity}
+          lastPageDisplay={lastPageDisplay}
+          nextPageDisplay={nextPageDisplay}
         >
           <div className="leftSide">
             <form method="GET">
@@ -174,9 +222,26 @@ const Page = () => {
             }
             {pagination.length > 1 &&
               <div className="pagination">
+                <div onClick={() => lastPageDisplay && setCurrentPage(currentPage - 1)}
+                  className='pagItem lastPage'
+                >
+                  &lt;
+                  </div>
                 {pagination.map((item, key) => (
-                  <div className="pagItem" key={key}>{item}</div>
+                  <div
+                    onClick={() => setCurrentPage(item)}
+                    className={item === currentPage ? 'pagItem active' : 'pagItem'}
+                    key={key}
+                  >
+                    {item}
+                  </div>
                 ))}
+                <div
+                  onClick={() => nextPageDisplay && setCurrentPage(currentPage + 1)}
+                  className='pagItem nextPage'
+                >
+                  &gt;
+                </div>
               </div>
             }
           </div>

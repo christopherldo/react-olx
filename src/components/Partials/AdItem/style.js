@@ -10,7 +10,7 @@ export const AdItem = styled.div`
     border-radius: 5px;
     color: #000;
     background-color: #fff;
-    transition: all 0.5s ease-in-out 0s;
+    transition: all 0.2s ease-in-out 0s;
 
     &:hover {
       background-color: #eee;

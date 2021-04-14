@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const PageArea = styled.div`
+export const PageArea = styled.div `
   display: flex;
   margin-top: 20px;
 
@@ -95,13 +95,34 @@ export const PageArea = styled.div`
       .pagItem {
         width: 30px;
         height: 30px;
-        border: 1px solid #000;
+        color: #6e0ad6;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
         display: flex;
         justify-content: center;
         align-items: center;
         font-size: 14px;
         margin: 2.5px;
         cursor: pointer;
+        user-select: none;
+        transition: all 0.2s ease-in-out 0s;
+
+        &:hover,
+        &.active {
+          color: #0056b3;
+          background-color: #e9ecef;
+          border-color: #999;
+        };
+
+        &.lastPage {
+          opacity: ${props => props.lastPageDisplay ? 1 : 0};
+          cursor: ${props => props.lastPageDisplay ? 'pointer' : 'default'};
+        };
+
+        &.nextPage {
+          opacity: ${props => props.nextPageDisplay ? 1 : 0};
+          cursor: ${props => props.nextPageDisplay ? 'pointer' : 'default'};
+        };
       };
     };
   };
