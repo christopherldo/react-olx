@@ -190,7 +190,7 @@ const Page = () => {
 
               <div className="filterName">Estado:</div>
               <select name="state" value={state} onChange={e => setState(e.target.value)}>
-                <option></option>
+                <option>Selecione seu estado</option>
                 {stateList.map((item, key) => (
                   <option key={key} value={item.uf}>{item.uf}</option>
                 ))}

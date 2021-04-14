@@ -3,9 +3,11 @@ import styled from 'styled-components';
 export const SearchArea = styled.div`
   background-color: #ddd;
   border-bottom: 1px solid #ccc;
-  padding: 20px 0;
+  padding: 20px 0px;
 
   .searchBox {
+    max-width: 1000px;
+    margin: auto;
     background-color: #9bb83c;
     padding: 20px 15px;
     border-radius: 5px;
@@ -51,6 +53,8 @@ export const SearchArea = styled.div`
   };
 
   .categoryList {
+    max-width: 1000px;
+    margin: auto;
     display: flex;
     flex-flow: wrap;
     margin-top: 10px;
@@ -85,6 +89,7 @@ export const PageArea = styled.div`
   };
 
   .list {
+    margin: 20px 0;
     display: flex;
     flex-flow: wrap;
 
@@ -99,5 +104,9 @@ export const PageArea = styled.div`
     font-weight: bold;
     display: inline-block;
     margin-top: 10px;
+  };
+
+  .text {
+    margin-top: 20px;
   }
 `;

@@ -1,10 +1,11 @@
 import React from 'react'
 import {FooterArea} from './style'
 
-const Component = props => {
+const Component = () => {
   return (
     <FooterArea>
-      {props.children}
+      Todos os direitos reservados <br/>
+      OlZ made by ChristopherLDO
     </FooterArea>
   );
 };

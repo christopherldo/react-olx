@@ -51,7 +51,6 @@ const Page = () => {
   return (
     <>
       <SearchArea>
-        <PageContainer>
           <div className="searchBox">
             <form method="GET" action="/ads">
               <input type="text" name="q" placeholder="O que você procura?" />
@@ -72,12 +71,9 @@ const Page = () => {
               </Link>
             ))}
           </div>
-        </PageContainer>
       </SearchArea>
-
       <PageContainer>
         <PageArea>
-          <h2>Anúncios Recentes</h2>
           <div className="list">
             {adList.map((item, key) => (
               <AdItem key={key} data={item} />
@@ -85,9 +81,11 @@ const Page = () => {
           </div>
           <Link to="/ads" className="seeAllLink">Ver todos &gt;&gt;</Link>
           <hr />
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex ducimus minus obcaecati excepturi blanditiis sapiente facere nobis nihil saepe illum eaque omnis iusto debitis, maxime aspernatur quibusdam quos. Explicabo, distinctio!
-          Modi, facilis nam. Ea maiores, optio, fugit quasi suscipit temporibus dicta est ratione quia veniam expedita at pariatur? Cum, autem doloremque rem deleniti a eum tenetur iste. Laudantium, ab saepe.
-          Iusto quae, architecto dolore excepturi, consectetur natus ab, eaque voluptate eius recusandae itaque aspernatur neque delectus corrupti velit est voluptatibus corporis dolor ad! Porro ea necessitatibus doloribus molestiae omnis?
+          <div className="text">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex ducimus minus obcaecati excepturi blanditiis sapiente facere nobis nihil saepe illum eaque omnis iusto debitis, maxime aspernatur quibusdam quos. Explicabo, distinctio!
+            Modi, facilis nam. Ea maiores, optio, fugit quasi suscipit temporibus dicta est ratione quia veniam expedita at pariatur? Cum, autem doloremque rem deleniti a eum tenetur iste. Laudantium, ab saepe.
+            Iusto quae, architecto dolore excepturi, consectetur natus ab, eaque voluptate eius recusandae itaque aspernatur neque delectus corrupti velit est voluptatibus corporis dolor ad! Porro ea necessitatibus doloribus molestiae omnis?
+          </div>
         </PageArea>
       </PageContainer>
     </>
