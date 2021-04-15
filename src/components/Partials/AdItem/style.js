@@ -2,7 +2,9 @@ import styled from 'styled-components';
 
 export const AdItem = styled.div`
   a {
-    display: block;
+    display: flex;
+    flex-flow: column;
+    height: 95%;
     border: 3px solid #fff;
     margin: 10px;
     text-decoration: none;

@@ -84,4 +84,28 @@ export const HeaderArea = styled.header`
       };
     };
   };
+
+  @media (max-width: 600px){
+    & {
+      height: auto;
+    };
+
+    .container {
+      flex-flow: column;
+    };
+
+    .logo {
+      justify-content: center;
+      margin-top: 20px;
+    };
+
+    nav ul {
+      flex-direction: column;
+      height: auto;
+    };
+
+    nav li {
+      margin: 10px 0;
+    };
+  };
 `;
