@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import qs from 'qs';
 
-const BASEAPI = 'http://127.0.0.1:3001/api';
+const BASEAPI = 'https://olz-backend.herokuapp.com/api/';
 
 const apiFetchGet = async (endpoint, body = {}) => {
   if (body.token === undefined) {
