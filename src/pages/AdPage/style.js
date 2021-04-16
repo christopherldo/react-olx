@@ -42,6 +42,12 @@ export const BreadCrumb = styled.div`
     color: #000;
     font-weight: bold;
   };
+
+  @media(max-width: 600px) {
+    & {
+      margin: 20px;
+    };
+  };
 `;
 
 export const PageArea = styled.div`
@@ -161,6 +167,41 @@ export const PageArea = styled.div`
       };
     };
   };
+
+  @media(max-width: 600px) {
+    & {
+      flex-flow: column;
+    };
+
+    .leftSide{
+      margin-right: 0;
+
+      .box {
+        margin: auto;
+        width: 320px;
+        flex-flow: column;
+      };
+
+      .adInfo {
+        padding: 10px;
+      };
+    };
+
+    .rightSide {
+      margin-top: 20px;
+      width: auto;
+
+      .box {
+        margin: auto;
+        width: 320px;
+      };
+
+      .contactSellerLink {
+        margin: 20px auto;
+        width: 320px;
+      };
+    };
+  };
 `;
 
 export const AdImage = styled.div`
@@ -181,9 +222,20 @@ export const OthersArea = styled.div`
 
   .list {
     display: flex;
+    flex-flow: wrap;
 
     .aditem {
       width: 25%;
+    };
+  };
+
+  @media(max-width: 600px) {
+    & {
+      margin: 10px;
+    };
+
+    .list .aditem {
+      width: 50%;
     };
   };
 `;
