@@ -2,7 +2,6 @@ import Cookies from 'js-cookie';
 import qs from 'qs';
 
 const BASEAPI = process.env.REACT_APP_BASE_API;
-console.log(BASEAPI);
 
 const apiFetchGet = async (endpoint, body = {}) => {
   if (body.token === undefined) {
