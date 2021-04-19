@@ -79,9 +79,14 @@ const Page = () => {
         <PageArea>
           <div className="list">
           {loading ? <Fake height="300" fillContent/>
-          : adList.map((item, key) => (
-              <AdItem key={key} data={item} />
-            ))
+          : adList.length > 0
+            ? adList.map((item, key) => (
+                <AdItem key={key} data={item} />
+              ))
+            : <div className="noAds">
+                Parece que nenhum anúncio foi postado ainda...
+                <Link to="/post-an-add">Clique aqui para postar o primeiro</Link>
+              </div>
           }
           </div>
           <Link to="/ads" className="seeAllLink">Ver todos &gt;&gt;</Link>

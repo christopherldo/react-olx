@@ -155,6 +155,19 @@ export const PageArea = styled.div`
     .aditem {
       width: 25%;
     };
+
+    .noAds {
+      flex: 1;
+      padding: 20px 0;
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+
+      a {
+        font-weight: bold;
+        color: #000;
+      };
+    };
   };
 
   .seeAllLink {
