@@ -34,7 +34,7 @@ const Page = () => {
     e.preventDefault();
     setError('');
 
-    if (title && category && price && description) {
+    if (title && category && (price || priceNegotiable) && description) {
       const fData = new FormData();
       fData.append('title', title);
       fData.append('category', category);
@@ -48,9 +48,8 @@ const Page = () => {
         };
       };
 
-      const json = await api.addAd(fData);
-
       setDisabled(true);
+      const json = await api.addAd(fData);
 
       if (json.error) {
         const jsonErrors = [];
