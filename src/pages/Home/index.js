@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useApi from '../../helpers/OLXApi';
-import { PageArea, SearchArea } from './style';
+import { PageArea, SearchArea, Fake } from './style';
 import { PageContainer } from '../../components';
 import { Link } from 'react-router-dom';
 import { AdItem } from '../../components';
@@ -11,6 +11,7 @@ const Page = () => {
   const [stateList, setStateList] = useState([]);
   const [categories, setCategories] = useState([]);
   const [adList, setAdList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getStates = async () => {
@@ -28,23 +29,23 @@ const Page = () => {
       const stateList = await api.getCategories();
       setCategories(stateList);
     };
-    setTimeout(() => {
-      getCategories();
-    }, 200);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     const getRecentAds = async () => {
       const json = await api.getAds({
         sort: 'desc',
         limit: 8,
       });
       setAdList(json.ads);
+      setLoading(false);
     };
     setTimeout(() => {
+      getCategories();
       getRecentAds();
-    }, 200);
+    }, 200)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -64,20 +65,24 @@ const Page = () => {
             </form>
           </div>
           <div className="categoryList">
-            {categories.map((item, key) => (
-              <Link key={key} to={`/ads?cat=${item.slug}`} className="categoryItem">
-                <img src={item.img} alt={item.name} />
-                <span>{item.name}</span>
-              </Link>
-            ))}
+            {loading ? <Fake height="70" fillContent/>
+            : categories.map((item, key) => (
+                <Link key={key} to={`/ads?cat=${item.slug}`} className="categoryItem">
+                  <img src={item.img} alt={item.name} />
+                  <span>{item.name}</span>
+                </Link>
+              ))
+            }
           </div>
       </SearchArea>
       <PageContainer>
         <PageArea>
           <div className="list">
-            {adList.map((item, key) => (
+          {loading ? <Fake height="300" fillContent/>
+          : adList.map((item, key) => (
               <AdItem key={key} data={item} />
-            ))}
+            ))
+          }
           </div>
           <Link to="/ads" className="seeAllLink">Ver todos &gt;&gt;</Link>
           <hr />
