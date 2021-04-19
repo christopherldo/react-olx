@@ -27,7 +27,7 @@ const Page = () => {
   const [pagination, setPagination] = useState([]);
   const [lastPageDisplay, setLastPageDisplay] = useState(false);
   const [nextPageDisplay, setNextPageDisplay] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(null);
   const [resultOpacity, setResultOpacity] = useState(1);
   const [warningMessage, setWarningMessage] = useState('');
   const [error, setError] = useState(false);
@@ -36,8 +36,8 @@ const Page = () => {
     setError(false);
     setAdList([]);
 
-    const LIMIT = 15;
-    const offset = (currentPage - 1) * LIMIT;
+    const LIMIT = 1;
+    const offset = currentPage ? (currentPage - 1) * LIMIT : 0;
 
     const json = await api.getAds({
       sort: 'desc',
@@ -63,6 +63,10 @@ const Page = () => {
       setError(false);
     };
   };
+
+  useEffect(() => {
+    setAdList([]);
+  }, [])
 
   useEffect(() => {
     const queryQ = query.get('q');
@@ -98,9 +102,7 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
-    clearTimeout(timer);
     setWarningMessage('Carregando...');
-    setCurrentPage(1);
     setPagination([]);
 
     const queryString = [];
@@ -117,6 +119,7 @@ const Page = () => {
     };
 
     timer = setTimeout(getAdsList, 500);
+    setCurrentPage(1);
     setResultOpacity(0.5);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q, cat, state, history]);
@@ -165,8 +168,10 @@ const Page = () => {
   }, [adsTotal, adList, currentPage]);
 
   useEffect(() => {
-    setResultOpacity(0.5);
-    timer = setTimeout(getAdsList, 500);
+    if(currentPage) {
+      setResultOpacity(0.5);
+      getAdsList();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
