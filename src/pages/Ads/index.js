@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useApi from '../../helpers/OLXApi';
-import { PageArea } from './style';
+import { PageArea, Fake } from './style';
 import { PageContainer } from '../../components';
 import { useLocation, useHistory } from 'react-router-dom';
 import { AdItem } from '../../components';
@@ -31,12 +31,13 @@ const Page = () => {
   const [resultOpacity, setResultOpacity] = useState(1);
   const [warningMessage, setWarningMessage] = useState('');
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const getAdsList = async () => {
     setError(false);
     setAdList([]);
 
-    const LIMIT = 1;
+    const LIMIT = 15;
     const offset = currentPage ? (currentPage - 1) * LIMIT : 0;
 
     const json = await api.getAds({
@@ -84,20 +85,13 @@ const Page = () => {
       const stateList = await api.getStates();
       setStateList(stateList);
     };
-    setTimeout(() => {
-      getStates();
-    }, 200);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     const getCategories = async () => {
       const stateList = await api.getCategories();
       setCategories(stateList);
+      setLoading(false);
     };
-    setTimeout(() => {
-      getCategories();
-    }, 200);
+    getStates();
+    getCategories();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -203,7 +197,8 @@ const Page = () => {
 
               <div className="filterName">Categoria:</div>
               <ul>
-                {categories.map((item, key) => (
+                {loading ? <Fake height="200" fillContent/>
+                : categories.map((item, key) => (
                   <li
                     key={key}
                     className={`categoryItem ${cat === item.slug && 'active'}`}
@@ -212,7 +207,8 @@ const Page = () => {
                     <img src={item.img} alt={item.name} />
                     <span>{item.name}</span>
                   </li>
-                ))}
+                ))
+                }
               </ul>
             </form>
           </div>
