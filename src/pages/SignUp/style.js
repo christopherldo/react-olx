@@ -43,6 +43,7 @@ export const PageArea = styled.div`
         select {
           width: 100%;
           height: 28px;
+          border: 1px solid #ddd;
         };
 
         button {
